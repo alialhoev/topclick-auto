@@ -1,13 +1,14 @@
+import { LoginPage } from '../pages/LoginPage';
 import { test, expect } from '@playwright/test';
 
 test('Успешная авторизация на ТопКлик', async ({ page }) => {
-  // 1. Авторизация
-await page.goto('https://dev.topklik.online/');
+  
+const loginPage = new LoginPage(page);
+await loginPage.openUrl();
+await loginPage.fillLogin('tester@inzhenerka.tech');
+await loginPage.fillPassword('LetsTest!');
+await loginPage.clickSubmit();
 
-  await page.getByRole('textbox', { name: 'логин' }).fill('tester@inzhenerka.tech');
-  await page.getByRole('textbox', { name: 'пароль' }).fill('LetsTest!');
-  await page.getByRole('button', { name: 'Войти' }).click();
+await expect(page.getByText('Калькулятор столешниц')).toBeVisible();
 
-  await expect(page.getByText('Калькулятор столешниц')).toBeVisible();
 });
-
